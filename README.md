@@ -1,2 +1,6 @@
 # 2.5D-demo
-This is a template for a 2.5D game in pygame.
+
+A tiny, clean, first‑person foundation built with Python + Pygame.
+This template gives you:
+* Clean movement + collision
+* A modular raycasting renderer
