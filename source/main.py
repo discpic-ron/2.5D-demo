@@ -3,7 +3,7 @@ import math
 
 pygame.init()
 
-WIDTH, HEIGHT = 800, 600                          # FIX 1: WIDTH/HEIGHT were never defined
+WIDTH, HEIGHT = 800, 600                          
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Raycaster")
 clock = pygame.time.Clock()
@@ -13,7 +13,7 @@ FOV = math.radians(60)
 NUM_RAYS = 200
 MAX_DEPTH = 8
 
-world_map = [                                     # FIX 3: expanded to a proper walled map
+world_map = [                                    
     [1, 1, 1, 1, 1, 1, 1, 1],
     [1, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 1, 1, 0, 1, 0, 1],
@@ -30,10 +30,9 @@ player_x, player_y = 1.5, 1.5
 player_angle = 0.0
 speed = 2.0
 rot_speed = 1.5
-
 running = True
 
-
+# functions
 def cast_rays():
     start_angle = player_angle - FOV / 2
     delta_angle = FOV / NUM_RAYS
@@ -53,9 +52,7 @@ def cast_rays():
             elif world_map[test_y][test_x] == 1:
                 hit = True
 
-        # Correct fisheye distortion
         depth *= math.cos(player_angle - angle)
-
         wall_height = min(HEIGHT, int(HEIGHT / (depth + 0.0001)))
         shade = max(50, 255 - int(depth * 40))
         color = (shade, shade // 2, shade // 2)
@@ -90,13 +87,13 @@ while running:
         player_x -= math.cos(player_angle) * move_dt
         player_y -= math.sin(player_angle) * move_dt
 
-    gx, gy = int(player_x), int(player_y)        # FIX 2: was broken "int(gx), int(gy) == ..."
+    gx, gy = int(player_x), int(player_y)
     if gy < 0 or gy >= MAP_H or gx < 0 or gx >= MAP_W or world_map[gy][gx] == 1:
         player_x, player_y = old_x, old_y
 
     screen.fill((0, 0, 0))
-    pygame.draw.rect(screen, (30, 30, 30), (0, 0, WIDTH, HEIGHT // 2))       # ceiling
-    pygame.draw.rect(screen, (60, 60, 60), (0, HEIGHT // 2, WIDTH, HEIGHT // 2))  # floor
+    pygame.draw.rect(screen, (30, 30, 30), (0, 0, WIDTH, HEIGHT // 2))
+    pygame.draw.rect(screen, (60, 60, 60), (0, HEIGHT // 2, WIDTH, HEIGHT // 2))
     cast_rays()
 
     pygame.display.flip()
